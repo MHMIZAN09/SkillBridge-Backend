@@ -146,4 +146,24 @@ export const auth = betterAuth({
       }
     }),
   },
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          try {
+            if (user.role === UserRoles.TUTOR) {
+              const result = await prisma.tutorProfile.create({
+                data: {
+                  userId: user.id,
+                },
+              });
+              console.log(result);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        },
+      },
+    },
+  },
 });

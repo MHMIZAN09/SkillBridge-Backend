@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { auth } from './lib/auth';
 import { toNodeHandler } from 'better-auth/node';
+import { UserRouter } from './modules/user/user.route';
 
 const app = express();
 
@@ -14,5 +15,7 @@ app.get('/', (req, res) => {
 
 // better auth
 app.all('/api/auth/*splat', toNodeHandler(auth));
+
+app.use('/api/users', UserRouter);
 
 export default app;
