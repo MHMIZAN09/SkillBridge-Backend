@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -6,6 +5,17 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+enum UserRoles {
+  STUDENT
+  TUTOR
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  BANNED
 }
 
 model User {
@@ -18,6 +28,9 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+
+  role   UserRoles  @default(STUDENT)
+  status UserStatus @default(ACTIVE)
 
   @@unique([email])
   @@map("user")
