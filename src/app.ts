@@ -3,6 +3,9 @@ import cors from 'cors';
 import { auth } from './lib/auth';
 import { toNodeHandler } from 'better-auth/node';
 import { UserRouter } from './modules/user/user.route';
+import errorHandler from './middleware/globalErrorHandler';
+import { notFound } from './middleware/notFound';
+import { TutorRoutes } from './modules/tutor/tutor.route';
 
 const app = express();
 
@@ -17,5 +20,12 @@ app.get('/', (req, res) => {
 app.all('/api/auth/*splat', toNodeHandler(auth));
 
 app.use('/api/users', UserRouter);
+
+app.use('/api/tutors', TutorRoutes);
+
+// Global error handling and 404 not found middleware
+
+app.use(errorHandler);
+app.use(notFound);
 
 export default app;

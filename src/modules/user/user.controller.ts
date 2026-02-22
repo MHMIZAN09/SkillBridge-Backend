@@ -1,22 +1,18 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { UserService } from './user.service';
+import type { User } from '../../../generated/prisma/client';
 
 const getUser = async (req: Request, res: Response) => {
   try {
-    const user = await UserService.getUser();
-    res.status(200).json({
-      success: true,
-      message: 'User retrieved successfully',
-      data: user,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Failed to retrieve user',
-    });
-  }
+    const result = await UserService.getUser(req.user as User);
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: 'User data retrieved successfully',
+        data: result,
+      });
+  } catch (error) {}
 };
 
-export const UserController = {
-  getUser,
-};
+export const UserController = { getUser };
