@@ -42,7 +42,8 @@ export const auth = betterAuth({
   },
 
   emailVerification: {
-    sendVerificationEmail: async ({ user, url }) => {
+    sendVerificationEmail: async ({ user, url, token }) => {
+      const verificationUrl = `${process.env.APP_URL}/verify-email?token=${token}`;
       await transporter.sendMail({
         from: `"SkillBridge" <${config.appUser}>`,
         to: user.email,
