@@ -6,6 +6,7 @@ import { UserRouter } from './modules/user/user.route';
 import errorHandler from './middleware/globalErrorHandler';
 import { notFound } from './middleware/notFound';
 import { TutorRoutes } from './modules/tutor/tutor.route';
+import { CategoryRouter } from './modules/category/category.route';
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use('/api/users', UserRouter);
 
 app.use('/api/tutors', TutorRoutes);
 
+app.use('/api/categories', CategoryRouter);
 // Global error handling and 404 not found middleware
 
 app.use(errorHandler);
