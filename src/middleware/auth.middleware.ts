@@ -18,7 +18,6 @@ const authMiddleware = (...roles: UserRoles[]) => {
         });
       }
       req.user = session.user as User;
-
       if (roles.length > 0 && !roles.includes(req.user.role as UserRoles)) {
         return res.status(403).json({
           success: false,

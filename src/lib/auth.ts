@@ -150,17 +150,31 @@ export const auth = betterAuth({
     user: {
       create: {
         after: async (user) => {
-          try {
-            if (user.role === UserRoles.TUTOR) {
-              const result = await prisma.tutorProfile.create({
-                data: {
-                  userId: user.id,
-                },
+          if (user.role === UserRoles.TUTOR) {
+            try {
+              // Check if tutor profile already exists
+              const existing = await prisma.tutorProfile.findUnique({
+                where: { userId: user.id },
               });
-              console.log(result);
+
+              if (!existing) {
+                const result = await prisma.tutorProfile.create({
+                  data: {
+                    userId: user.id,
+                  },
+                });
+                console.log('TutorProfile created:', result);
+              } else {
+                console.log('TutorProfile already exists for user:', user.id);
+              }
+            } catch (error) {
+              console.error(
+                'Error creating TutorProfile for user:',
+                user.id,
+                error,
+              );
+              throw error; // Important: propagate the error
             }
-          } catch (error) {
-            console.log(error);
           }
         },
       },

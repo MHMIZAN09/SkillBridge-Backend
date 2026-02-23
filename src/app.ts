@@ -5,8 +5,11 @@ import { toNodeHandler } from 'better-auth/node';
 import { UserRouter } from './modules/user/user.route';
 import errorHandler from './middleware/globalErrorHandler';
 import { notFound } from './middleware/notFound';
-import { TutorRoutes } from './modules/tutor/tutor.route';
+
 import { CategoryRouter } from './modules/category/category.route';
+import { TutorRouter } from './modules/tutor/tutor.route';
+import { BookingRouter } from './modules/booking/booking.route';
+import { availabilityRouter } from './modules/availability/availability.route';
 
 const app = express();
 
@@ -22,9 +25,13 @@ app.all('/api/auth/*splat', toNodeHandler(auth));
 
 app.use('/api/users', UserRouter);
 
-app.use('/api/tutors', TutorRoutes);
+app.use('/api/tutors', TutorRouter);
 
 app.use('/api/categories', CategoryRouter);
+
+app.use('/api/bookings', BookingRouter);
+app.use('/api/availabilities', availabilityRouter);
+
 // Global error handling and 404 not found middleware
 
 app.use(errorHandler);

@@ -93,7 +93,8 @@ model TutorProfile {
   bio          String? @db.VarChar(255)
   hourlyRate   Int?    @db.Integer
   categoryId   String?
-  rating       Decimal @default(0.0) @db.Decimal(2, 1)
+  isFeatured   Boolean @default(false)
+  avgRating    Decimal @default(0.0) @db.Decimal(2, 1)
   totalReviews Int     @default(0) @db.Integer
 
   createdAt     DateTime       @default(now())
@@ -120,10 +121,20 @@ model Category {
   @@map("categories")
 }
 
+enum DayOfWeek {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
 model Availability {
   id        String             @id @default(uuid())
   tutorId   String
-  date      DateTime           @db.Date
+  day       DayOfWeek
   startTime DateTime           @db.Time
   endTime   DateTime           @db.Time
   status    AvailabilityStatus @default(AVAILABLE)
@@ -131,7 +142,7 @@ model Availability {
   tutor   TutorProfile @relation(fields: [tutorId], references: [id], onDelete: Cascade)
   booking Booking?
 
-  @@index([tutorId])
+  @@index([tutorId, day, startTime, endTime])
   @@map("availability")
 }
 
