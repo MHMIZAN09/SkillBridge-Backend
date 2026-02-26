@@ -23,4 +23,6 @@ router.put(
   BookingController.updateBookingStatus,
 );
 
+
+
 export const BookingRouter = router;

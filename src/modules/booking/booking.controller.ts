@@ -87,8 +87,33 @@ const updateBookingStatus = async (req: Request, res: Response) => {
   }
 };
 
+const getBookingById = async (req: Request, res: Response) => {
+  try {
+    const bookingId = req.params.bookingId as string;
+    const result = await BookingService.getBookingById(bookingId);
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: 'Booking not found',
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'Booking retrieved successfully',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve booking',
+      error: error.message || 'An unexpected error occurred',
+    });
+  }
+};
+
 export const BookingController = {
   getAllBookings,
   createBooking,
   updateBookingStatus,
+  getBookingById,
 };

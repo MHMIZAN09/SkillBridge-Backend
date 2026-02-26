@@ -11,4 +11,10 @@ router.get(
   UserController.getUser,
 );
 
+router.put(
+  '/update',
+  authMiddleware(UserRoles.STUDENT, UserRoles.TUTOR, UserRoles.ADMIN),
+  UserController.updateUserData,
+);
+
 export const UserRouter = router;
