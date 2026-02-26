@@ -30,7 +30,7 @@ app.use('/api/tutors', TutorRouter);
 app.use('/api/categories', CategoryRouter);
 
 app.use('/api/bookings', BookingRouter);
-app.use('/api/availabilities', availabilityRouter);
+app.use('/api/availability', availabilityRouter);
 
 // Global error handling and 404 not found middleware
 

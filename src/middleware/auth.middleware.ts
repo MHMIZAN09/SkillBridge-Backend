@@ -3,6 +3,7 @@ import { UserRoles } from '../../generated/prisma/enums';
 
 import { auth as betterAuth } from '../lib/auth';
 import { User } from '../../generated/prisma/client';
+import { prisma } from '../lib/prisma';
 
 const authMiddleware = (...roles: UserRoles[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -24,6 +25,23 @@ const authMiddleware = (...roles: UserRoles[]) => {
           message:
             'Forbidden: You do not have permission to access this resource',
         });
+      }
+      if (
+        roles.includes(UserRoles.TUTOR) &&
+        req.user.role === UserRoles.TUTOR
+      ) {
+        const tutor = await prisma.tutorProfile.findUnique({
+          where: { userId: req.user.id },
+        });
+
+        if (!tutor) {
+          return res.status(404).json({
+            success: false,
+            message: 'Tutor profile not found',
+          });
+        }
+
+        req.tutorId = tutor.id;
       }
       next();
     } catch (error) {
