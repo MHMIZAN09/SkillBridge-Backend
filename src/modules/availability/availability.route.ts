@@ -13,7 +13,7 @@ router.get(
 );
 
 router.post(
-  '/create',
+  '/',
   authMiddleware(UserRoles.TUTOR),
   availabilityController.createAvailability,
 );

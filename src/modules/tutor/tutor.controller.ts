@@ -153,10 +153,62 @@ const deleteTutorSubject = async (req: Request, res: Response) => {
   }
 };
 
+const featureTutor = async (req: Request, res: Response) => {
+  try {
+    if (Object.keys(req.body).some((key) => key !== 'isFeatured')) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid field input. Only isFeatured is allowed.',
+      });
+    }
+    const result = await TutorService.featureTutor(
+      req.params.tutorId as string,
+      req.body.isFeatured,
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: 'Tutor featured status updated',
+      data: result,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error featuring tutor',
+      error: e instanceof Error ? e.message : e,
+    });
+  }
+};
+
+const getTutorDashboardOverview = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await TutorService.getTutorDashboardOverview(
+      req.user as User,
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: 'Retrieved tutors overview successfully',
+      data: result,
+    });
+  } catch (e: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Error retrieving tutors overview',
+    });
+  }
+};
+
 export const TutorController = {
   getAllTutors,
   getTutorById,
   updateTutor,
   updateTutorSubjects,
   deleteTutorSubject,
+  featureTutor,
+  getTutorDashboardOverview,
 };

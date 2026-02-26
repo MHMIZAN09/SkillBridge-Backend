@@ -25,4 +25,16 @@ router.delete(
   TutorController.deleteTutorSubject,
 );
 
+router.put(
+  '/:feature/:tutorId',
+  authMiddleware(UserRoles.ADMIN),
+  TutorController.featureTutor,
+);
+
+router.get(
+  '/dashboard/overview',
+  authMiddleware(UserRoles.TUTOR),
+  TutorController.getTutorDashboardOverview,
+);
+
 export const TutorRouter = router;

@@ -215,10 +215,25 @@ const deleteTutorSubject = async (subjectId: string, user: User) => {
   });
 };
 
+const featureTutor = async (tutorId: string, isFeatured: boolean) => {
+  return await prisma.tutorProfile.update({
+    where: {
+      id: tutorId,
+    },
+    data: {
+      isFeatured,
+    },
+  });
+};
+
+const getTutorDashboardOverview = async (user: User) => {};
+
 export const TutorService = {
   getAllTutors,
   getTutorById,
   updateTutor,
   updateTutorSubjects,
   deleteTutorSubject,
+  featureTutor,
+  getTutorDashboardOverview,
 };
